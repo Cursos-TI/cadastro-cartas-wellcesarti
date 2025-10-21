@@ -1,126 +1,117 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 int main() {
-    printf("=== Desafio Super Trunfo - Nivel Mestre ===\n");
+    char primeiroAtributo, segundoAtributo;
+    int ataque1, ataque2, defesa1, defesa2, recuo1, recuo2;
+    int resultado1 = 0, resultado2 = 0;
+    int soma1, soma2;
 
-    // ===== Carta 1 =====
-    char estado1;                    // Apenas uma letra (A-H)
-    char codigo1[4];                 // Ex: A01
-    char nomeCidade1[50];            // Nome da cidade com espaços
-    unsigned long int populacao1;    // Número muito grande (sem negativos)
-    double area1, pib1;              // Área e PIB com casas decimais
-    unsigned int pontosTuristicos1;  // Sempre positivo
+    // Gerar números aleatórios
+    srand(time(0));
 
-    // ===== Carta 2 =====
-    char estado2;
-    char codigo2[4];
-    char nomeCidade2[50];
-    unsigned long int populacao2;
-    double area2, pib2;
-    unsigned int pontosTuristicos2;
+    ataque1 = rand() % 100 + 1;
+    defesa1 = rand() % 100 + 1;
+    recuo1 = rand() % 100 + 1;
 
-    // ===== Resultados =====
-    double densidade1, densidade2;
-    double pibPerCapita1, pibPerCapita2;
-    float superPoder1, superPoder2;
+    ataque2 = rand() % 100 + 1;
+    defesa2 = rand() % 100 + 1;
+    recuo2 = rand() % 100 + 1;
 
-    // ===== Entrada Carta 1 =====
-    printf("\nCarta 1:\n");
-    printf("Digite o Estado (A-H): ");
-    scanf(" %c", &estado1);
+    // Início do jogo
+    printf("Bem-vindo ao jogo Super Trunfo!\n\n");
 
-    printf("Digite o Codigo da Carta (ex: A01): ");
-    scanf("%3s", codigo1);
+    // Escolha do primeiro atributo
+    printf("Escolha o primeiro atributo:\n");
+    printf("A. Ataque\n");
+    printf("D. Defesa\n");
+    printf("R. Recuo\n");
+    printf("Escolha a comparacao: ");
+    scanf(" %c", &primeiroAtributo);
 
-    printf("Digite o Nome da Cidade: ");
-    scanf(" %[^\n]", nomeCidade1);
+    switch (primeiroAtributo) {
+        case 'A':
+        case 'a':
+            printf("\nVoce escolheu o atributo Ataque!\n");
+            resultado1 = (ataque1 > ataque2) ? 1 : 0;
+            break;
+        case 'D':
+        case 'd':
+            printf("\nVoce escolheu o atributo Defesa!\n");
+            resultado1 = (defesa1 > defesa2) ? 1 : 0;
+            break;
+        case 'R':
+        case 'r':
+            printf("\nVoce escolheu o atributo Recuo!\n");
+            resultado1 = (recuo1 < recuo2) ? 1 : 0; // Menor vence
+            break;
+        default:
+            printf("\nOpcao invalida!\n");
+            return 0;
+    }
 
-    printf("Digite a Populacao: ");
-    scanf("%lu", &populacao1);
+    // Escolha do segundo atributo
+    printf("\nEscolha o segundo atributo (diferente do primeiro):\n");
 
-    printf("Digite a Area (em km2): ");
-    scanf("%lf", &area1);
+    if (primeiroAtributo == 'A' || primeiroAtributo == 'a') {
+        printf("D. Defesa\n");
+        printf("R. Recuo\n");
+    } else if (primeiroAtributo == 'D' || primeiroAtributo == 'd') {
+        printf("A. Ataque\n");
+        printf("R. Recuo\n");
+    } else {
+        printf("A. Ataque\n");
+        printf("D. Defesa\n");
+    }
 
-    printf("Digite o PIB (em bilhoes de reais): ");
-    scanf("%lf", &pib1);
+    printf("Escolha a comparacao: ");
+    scanf(" %c", &segundoAtributo);
 
-    printf("Digite o Numero de Pontos Turisticos: ");
-    scanf("%u", &pontosTuristicos1);
+    // Impedir repetição do mesmo atributo
+    if (primeiroAtributo == segundoAtributo ||
+        primeiroAtributo == segundoAtributo + 32 ||
+        primeiroAtributo + 32 == segundoAtributo) {
+        printf("\nVoce escolheu o mesmo atributo! Encerrando o jogo.\n");
+        return 0;
+    }
 
-    // ===== Cálculos Carta 1 =====
-    densidade1 = (double)populacao1 / area1;
-    double pib1_em_reais = pib1 * 1000000000.0; // converte bilhões → reais
-    pibPerCapita1 = pib1_em_reais / (double)populacao1;
-    superPoder1 = (float)(populacao1 + area1 + pib1 +
-                          pontosTuristicos1 + pibPerCapita1 +
-                          (1.0 / densidade1));
+    switch (segundoAtributo) {
+        case 'A':
+        case 'a':
+            printf("\nVoce escolheu o atributo Ataque!\n");
+            resultado2 = (ataque1 > ataque2) ? 1 : 0;
+            break;
+        case 'D':
+        case 'd':
+            printf("\nVoce escolheu o atributo Defesa!\n");
+            resultado2 = (defesa1 > defesa2) ? 1 : 0;
+            break;
+        case 'R':
+        case 'r':
+            printf("\nVoce escolheu o atributo Recuo!\n");
+            resultado2 = (recuo1 < recuo2) ? 1 : 0;
+            break;
+        default:
+            printf("\nOpcao invalida!\n");
+            return 0;
+    }
 
-    // ===== Entrada Carta 2 =====
-    printf("\nCarta 2:\n");
-    printf("Digite o Estado (A-H): ");
-    scanf(" %c", &estado2);
+    // Soma dos atributos
+    soma1 = ataque1 + defesa1 + recuo1;
+    soma2 = ataque2 + defesa2 + recuo2;
 
-    printf("Digite o Codigo da Carta (ex: B02): ");
-    scanf("%3s", codigo2);
+    printf("\n===== RESULTADO FINAL =====\n");
+    printf("Carta 1 -> Ataque: %d | Defesa: %d | Recuo: %d | Soma: %d\n", ataque1, defesa1, recuo1, soma1);
+    printf("Carta 2 -> Ataque: %d | Defesa: %d | Recuo: %d | Soma: %d\n", ataque2, defesa2, recuo2, soma2);
 
-    printf("Digite o Nome da Cidade: ");
-    scanf(" %[^\n]", nomeCidade2);
-
-    printf("Digite a Populacao: ");
-    scanf("%lu", &populacao2);
-
-    printf("Digite a Area (em km2): ");
-    scanf("%lf", &area2);
-
-    printf("Digite o PIB (em bilhoes de reais): ");
-    scanf("%lf", &pib2);
-
-    printf("Digite o Numero de Pontos Turisticos: ");
-    scanf("%u", &pontosTuristicos2);
-
-    // ===== Cálculos Carta 2 =====
-    densidade2 = (double)populacao2 / area2;
-    double pib2_em_reais = pib2 * 1000000000.0;
-    pibPerCapita2 = pib2_em_reais / (double)populacao2;
-    superPoder2 = (float)(populacao2 + area2 + pib2 +
-                          pontosTuristicos2 + pibPerCapita2 +
-                          (1.0 / densidade2));
-
-    // ===== Saída das Cartas =====
-    printf("\n=== Cartas Cadastradas ===\n");
-
-    printf("\nCarta 1:\n");
-    printf("Estado: %c\n", estado1);
-    printf("Codigo: %s\n", codigo1);
-    printf("Nome da Cidade: %s\n", nomeCidade1);
-    printf("Populacao: %lu\n", populacao1);
-    printf("Area: %.2lf km2\n", area1);
-    printf("PIB: %.2lf bilhoes de reais\n", pib1);
-    printf("Pontos Turisticos: %u\n", pontosTuristicos1);
-    printf("Densidade Populacional: %.2lf hab/km2\n", densidade1);
-    printf("PIB per Capita: %.2lf reais\n", pibPerCapita1);
-    printf("Super Poder: %.2f\n", superPoder1);
-
-    printf("\nCarta 2:\n");
-    printf("Estado: %c\n", estado2);
-    printf("Codigo: %s\n", codigo2);
-    printf("Nome da Cidade: %s\n", nomeCidade2);
-    printf("Populacao: %lu\n", populacao2);
-    printf("Area: %.2lf km2\n", area2);
-    printf("PIB: %.2lf bilhoes de reais\n", pib2);
-    printf("Pontos Turisticos: %u\n", pontosTuristicos2);
-    printf("Densidade Populacional: %.2lf hab/km2\n", densidade2);
-    printf("PIB per Capita: %.2lf reais\n", pibPerCapita2);
-    printf("Super Poder: %.2f\n", superPoder2);
-
-    // ===== Comparações (0 = Carta 2 venceu, 1 = Carta 1 venceu) =====
-    printf("\n=== Comparacao de Cartas ===\n");
-    printf("Populacao: %d\n", populacao1 > populacao2);
-    printf("Area: %d\n", area1 > area2);
-    printf("PIB: %d\n", pib1 > pib2);
-    printf("Pontos Turisticos: %d\n", pontosTuristicos1 > pontosTuristicos2);
-    printf("Densidade Populacional: %d\n", densidade1 < densidade2); // menor vence
-    printf("PIB per Capita: %d\n", pibPerCapita1 > pibPerCapita2);
-    printf("Super Poder: %d\n", superPoder1 > superPoder2);
+    if (soma1 > soma2) {
+        printf("\nCarta 1 venceu!\n");
+    } else if (soma2 > soma1) {
+        printf("\nCarta 2 venceu!\n");
+    } else {
+        printf("\nEmpate!\n");
+    }
 
     return 0;
 }
